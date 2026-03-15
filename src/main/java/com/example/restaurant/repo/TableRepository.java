@@ -9,7 +9,7 @@ import com.example.restaurant.model.Table;
 
 @Repository
 public interface TableRepository extends JpaRepository<Table, Long> {
-    List<Table> findfindByZone(String zone);
+    List<Table> findByZone(String zone);
 
     List<Table> findByCapacity(int capacity);
 }
