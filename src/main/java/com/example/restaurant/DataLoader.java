@@ -1,5 +1,6 @@
 package com.example.restaurant;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 import org.springframework.boot.CommandLineRunner;
@@ -59,7 +60,7 @@ public class DataLoader implements CommandLineRunner {
                 Reservation r = new Reservation();
                 r.setTableId((long) i);
                 r.setPartySize(rand.nextInt(4) + 1);
-                r.setStartTime(null);
+                r.setStartTime(LocalDateTime.now().plusHours(rand.nextInt(5)));
                 r.setCustomerName("Customer " + i);
                 em.persist(r);
             }
