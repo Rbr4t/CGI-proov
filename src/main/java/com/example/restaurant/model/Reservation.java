@@ -28,8 +28,8 @@ public class Reservation {
         return tableId;
     }
 
-    public void setTableId(Long tableId) {
-        this.tableId = tableId;
+    public void setTableId(Long i) {
+        this.tableId = i;
     }
 
     public int getPartySize() {

@@ -3,6 +3,7 @@ package com.example.restaurant.model;
 import jakarta.persistence.*;
 
 @Entity
+@jakarta.persistence.Table(name = "restaurant_tables")
 public class Table {
 
     @Id
