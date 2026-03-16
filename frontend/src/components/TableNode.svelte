@@ -1,10 +1,13 @@
 <script lang="ts">
     import type { Table } from '../lib/types';
-    export let table: Table;
-    export let isOccupied: boolean;
-    export let isRecommended: boolean;
-    export let xPercent: number;
-    export let yPercent: number;
+
+    let { table, isOccupied, isRecommended, xPercent, yPercent } = $props<{
+        table: Table;
+        isOccupied: boolean;
+        isRecommended: boolean;
+        xPercent: number;
+        yPercent: number;
+    }>();
 </script>
 
 <div
@@ -18,35 +21,15 @@
         <span class="cap">{table.capacity}p</span>
         <span class="features">{table.features || ''}</span>
         {#if isRecommended}
-            <span class="star">⭐TEST</span>    
+            <span class="star">⭐</span>
         {/if}
     </div>
-    
 </div>
 
 <style>
-    .table {
-        position: absolute;
-        transform: translate(-50%, -50%); 
-        width: 10%;
-        min-width: 50px;
-        aspect-ratio: 1 / 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        background: #fff;
-        border: 2px solid #999;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
+    .table { position: absolute; transform: translate(-50%, -50%); width: 10%; min-width: 50px; aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; background: #fff; border: 2px solid #999; cursor: pointer; transition: all 0.3s ease; }
     .table.occupied { background: #ffcdd2; border-color: #e53935; color: #b71c1c; }
-    .table.recommended { 
-        background: #fff9c4; border-color: #fbc02d; border-width: 4px; z-index: 5;
-        transform: translate(-50%, -50%) scale(1.1);
-    }
+    .table.recommended { background: #fff9c4; border-color: #fbc02d; border-width: 4px; z-index: 5; transform: translate(-50%, -50%) scale(1.1); }
     .table-content { display: flex; flex-direction: column; font-size: 0.65rem; font-weight: bold; text-align: center; }
     .star { position: absolute; top: -10px; right: -10px; font-size: 1.2rem; }
 </style>

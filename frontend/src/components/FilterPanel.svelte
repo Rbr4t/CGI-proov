@@ -30,7 +30,7 @@
 
     <label>
         Kellaaeg
-        <input type="time" bind:value={time} />
+        <input type="time" bind:value={time}  />
     </label>
 
     <label>
@@ -58,7 +58,7 @@
         </select>
     </label>
 
-    <button on:click={handleSubmit}>Otsi</button>
+    <button onclick={handleSubmit}>Otsi</button>
 </div>
 
 <style>
