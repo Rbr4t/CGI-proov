@@ -17,10 +17,11 @@
         <span class="id">#{table.id}</span>
         <span class="cap">{table.capacity}p</span>
         <span class="features">{table.features || ''}</span>
+        {#if isRecommended}
+            <span class="star">⭐TEST</span>    
+        {/if}
     </div>
-    {#if isRecommended}
-        <span class="star">⭐</span>
-    {/if}
+    
 </div>
 
 <style>
