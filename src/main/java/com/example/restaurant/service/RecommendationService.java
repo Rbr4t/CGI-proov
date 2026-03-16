@@ -1,5 +1,8 @@
 package com.example.restaurant.service;
 
+import com.example.restaurant.DataLoader;
+import com.example.restaurant.model.Table;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,11 +15,17 @@ import com.example.restaurant.repo.TableRepository;
 @Service
 public class RecommendationService {
 
+    private final DataLoader dataLoader;
+
     @Autowired
     private TableRepository tableRepository;
 
     @Autowired
     private ReservationService reservationService;
+
+    RecommendationService(DataLoader dataLoader) {
+        this.dataLoader = dataLoader;
+    }
 
     public List<Table> getRecommendations(int partySize, String zone, String features, LocalDateTime startTime) {
         List<Table> allTables = tableRepository.findAll();
@@ -34,8 +43,32 @@ public class RecommendationService {
 
     }
 
+    /**
+     * Method, that gives score to the table, takes in count:
+     * 1. vacant seats and
+     * 2. features the table matches
+     * 
+     * Higher score -> better matching table for the party
+     * 
+     * @param table
+     * @param partySize
+     * @param features
+     * @return score
+     */
     public int calculateScore(Table table, int partySize, String features) {
-        return 1;
+        int score = 0;
+
+        // score by vacant seats
+        score -= (table.getCapacity() - partySize) * 10;
+
+        // score by containing features
+        if (features != null && !features.isEmpty()) {
+            if (table.getFeatures().contains(features)) {
+                score += 30;
+            }
+        }
+
+        return score;
     }
 
 }
