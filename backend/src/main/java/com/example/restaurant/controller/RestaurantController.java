@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:5000")
+@CrossOrigin(origins = "*")
 public class RestaurantController {
     private final ReservationRepository reservationRepository;
 
