@@ -15,6 +15,15 @@ public class Table {
     private String features;
     private double x;
     private double y;
+    private int score;
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public Long getId() {
         return id;
