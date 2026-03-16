@@ -1,76 +1,59 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { getTables, getReservations } from './lib/api';
+    import { getTables, getReservations, getRecommendations } from './lib/api';
     import type { Table, Reservation } from './lib/types';
+    import FilterPanel from './components/FilterPanel.svelte';
+    import FloorPlan from './components/FloorPlan.svelte';
 
     let tables: Table[] = [];
     let reservations: Reservation[] = [];
-    let error: string | null = null;
+    let recommended: Table[] = [];
     let loading = true;
+    let error: string | null = null;
 
     onMount(async () => {
-        const tablesRes = await getTables();
-        const reservationsRes = await getReservations();
-
         try {
-          tables = tablesRes ?? [];
-          reservations = reservationsRes ?? [];
-          console.log(tables);
-          
-        } catch (error) {
-          error = error;
+            const [tRes, rRes] = await Promise.all([getTables(), getReservations()]);
+            tables = tRes ?? [];
+            reservations = rRes ?? [];
+        } catch (e) {
+            error = "Andmete laadimine ebaõnnestus";
+        } finally {
+            loading = false;
         }
-
-        loading = false;
     });
 
-    function isOccupied(tableId: number): boolean {
-        return reservations.some(r => r.tableId === tableId);
+    async function handleFilter(data: any) {
+        const res = await getRecommendations(data.partySize, data.startTime, data.zone, data.features);
+        recommended = res ?? [];
     }
 </script>
 
 <main>
     <h1>Restorani reserveerimissüsteem</h1>
 
-    {#if loading}
-        <p>Laadimine...</p>
-    {:else if error}
-        <p style="color: red;">Viga: {error}</p>
-    {:else}
-        <div class="tables">
-            {#each tables as table}
-                <div class="table" class:occupied={isOccupied(table.id)}>
-                    <p>Laud #{table.id}</p>
-                    <p>{table.capacity} kohta</p>
-                    <p>{table.zone}</p>
-                    <p>{isOccupied(table.id) ? 'Hõivatud' : 'Vaba'}</p>
-                </div>
-            {/each}
+    <div class="layout">
+        <FilterPanel onFilter={handleFilter} />
+
+        <div class="content">
+            {#if loading}
+                <p>Laadimine...</p>
+            {:else if error}
+                <p class="error">{error}</p>
+            {:else}
+                {#if recommended.length > 0}
+                    <p class="info">Parima skooriga lauad on esile tõstetud</p>
+                {/if}
+                
+                <FloorPlan {tables} {reservations} {recommended} />
+            {/if}
         </div>
-    {/if}
+    </div>
 </main>
 
 <style>
-    main {
-        padding: 2rem;
-        font-family: sans-serif;
-    }
-
-    .tables {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 1rem;
-    }
-
-    .table {
-        padding: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background: #e8f5e9;
-        cursor: pointer;
-    }
-
-    .table.occupied {
-        background: #ffebee;
-    }
+    .layout { display: flex; gap: 1rem; padding: 2rem; }
+    .content { flex-grow: 1; }
+    .error { color: red; }
+    .info { margin-bottom: 1rem; color: #666; font-style: italic; }
 </style>
