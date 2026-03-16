@@ -10,12 +10,14 @@ public class Table {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Transient
+    private int score;
+
     private int capacity;
     private String zone;
     private String features;
     private double x;
     private double y;
-    private int score;
 
     public int getScore() {
         return score;
