@@ -2,17 +2,18 @@
     import TableNode from './TableNode.svelte';
     import type { Table, Reservation } from '../lib/types';
 
-    let { tables = [], reservations = [], recommended = [] } = $props<{
+    let { tables = [], reservations = [], recommended = [], onTableClick } = $props<{
         tables: Table[];
         reservations: Reservation[];
         recommended: Table[];
+        onTableClick: (table: Table) => void;
     }>();
 
     let maxX = $derived(Math.max(...tables.map(t => t.x), 100) + 150);
     let maxY = $derived(Math.max(...tables.map(t => t.y), 100) + 150);
     let maxScore = $derived(recommended.length > 0 ? Math.max(...recommended.map(r => r.score ?? 0)) : 0);
 
-    const checkOccupied = (id: number) => reservations.some(r => r.tableId === id);
+    const checkOccupied = (id: number) => reservations.some(r => r.tableId === id);  
     const checkRecommended = (id: number) => recommended.some(r => r.id === id && r.score === maxScore);
 </script>
 
@@ -25,6 +26,7 @@
                 isRecommended={checkRecommended(table.id)}
                 xPercent={(table.x / maxX) * 100}
                 yPercent={(table.y / maxY) * 100}
+                {onTableClick}
             />
         {/each}
     </div>

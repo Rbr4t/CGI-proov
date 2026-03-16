@@ -28,12 +28,55 @@
 </div>
 
 <style>
-    .time-controller { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; background: #2c3e50; padding: 1rem 1.5rem; border-radius: 1rem; color: white; }
-    .controls { display: flex; align-items: center; gap: 1rem; }
-    .display { display: flex; flex-direction: column; align-items: center; min-width: 80px; background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 0.5rem; }
-    .time { font-size: 1.4rem; font-weight: bold; color: #4db6ac; }
-    .date { font-size: 0.75rem; opacity: 0.8; text-transform: uppercase; }
-    button { background: #34495e; border: none; color: white; padding: 0.5rem 0.8rem; border-radius: 0.4rem; cursor: pointer; }
-    button:hover { background: #45627d; }
-    .reset-btn { font-size: 0.8rem; background: transparent; border: 1px solid rgba(255,255,255,0.3); width: 100%; }
+    .time-controller {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        max-width: 300px;
+    }
+
+    .display {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 14px;
+    }
+
+    .time {
+        font-size: 1.4rem;
+        font-weight: bold;
+    }
+
+    .date {
+        font-size: 0.75rem;
+        opacity: 0.6;
+        text-transform: uppercase;
+    }
+
+    .controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4px;
+    }
+
+    button {
+        padding: 8px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #388e3c;
+    }
+
+    .reset-btn {
+        width: 100%;
+    }
 </style>

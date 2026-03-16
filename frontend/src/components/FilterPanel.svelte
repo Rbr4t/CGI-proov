@@ -9,10 +9,10 @@
 
     let { onFilter } = $props<{
         onFilter: (data: { partySize: number, zone: string, features: string, startTime: string }) => void
-    }>();
+    }>();   
 
     function handleSubmit() {
-        if(!date && !time) return;
+        if(!date || !time) return;
 
         const startTime = `${date}T${time}:00`;
         onFilter({partySize, zone, features, startTime})
