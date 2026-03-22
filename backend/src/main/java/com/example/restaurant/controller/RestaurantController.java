@@ -67,8 +67,8 @@ public class RestaurantController {
         return null;
     }
 
-    @GetMapping("recommendations/pairs")
-    public List<List<Table>> getTablePairs(
+    @GetMapping("recommendations/pair")
+    public List<Table> getTablePair(
             @RequestParam int partySize,
             @RequestParam String startTime) {
         LocalDateTime time = LocalDateTime.parse(startTime);

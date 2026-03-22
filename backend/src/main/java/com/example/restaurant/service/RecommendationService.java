@@ -77,12 +77,13 @@ public class RecommendationService {
         return Math.sqrt(Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2));
     }
 
-    public List<List<Table>> getTablePairRecommendations(int partySize, LocalDateTime startTime) {
+    public List<Table> getTablePairRecommendations(int partySize, LocalDateTime startTime) {
         List<Table> available = tableRepository.findAll().stream()
                 .filter(t -> reservationService.isTableAvailable(t.getId(), startTime))
                 .collect(Collectors.toList());
 
-        List<List<Table>> pairs = new ArrayList<>();
+        List<Table> bestPair = new ArrayList<>();
+        double bestScore = 10000;
         int maxDist = 250;
 
         for (int i = 0; i < available.size(); i++) {
@@ -91,12 +92,17 @@ public class RecommendationService {
                 Table b = available.get(j);
 
                 if (a.getCapacity() + b.getCapacity() >= partySize && distance(a, b) <= maxDist) {
-                    pairs.add(List.of(a, b));
+                    double score = distance(a, b) + (a.getCapacity() + b.getCapacity() - partySize) * 10;
+
+                    if (score < bestScore) {
+                        bestScore = score;
+                        bestPair = List.of(a, b);
+                    }
                 }
             }
         }
 
-        return pairs;
+        return bestPair;
     }
 
 }
