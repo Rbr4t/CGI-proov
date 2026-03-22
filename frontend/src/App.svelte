@@ -1,6 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { getTables, getReservations, getRecommendations } from "./lib/api";
+  import {
+    getTables,
+    getReservations,
+    getRecommendations,
+    getTablePairRecommendations,
+  } from "./lib/api";
   import type { Table, Reservation } from "./lib/types";
   import FilterPanel from "./components/FilterPanel.svelte";
   import FloorPlan from "./components/FloorPlan.svelte";
@@ -8,6 +13,7 @@
   import BookingModal from "./components/BookingModal.svelte";
 
   let tables: Table[] = $state([]);
+  let pair: Table[] = $state([]);
   let selectedTable: Table | null = $state(null);
   let reservations: Reservation[] = $state([]);
   let recommended: Table[] = $state([]);
@@ -35,13 +41,23 @@
   }) {
     if (data.partySize > 0) {
       try {
-        recommended =
-          (await getRecommendations(
+        const res = await getRecommendations(
+          data.partySize,
+          data.startTime,
+          data.zone,
+          data.features,
+        );
+
+        if (res.length > 0) {
+          recommended = res;
+          pair = [];
+        } else {
+          pair = await getTablePairRecommendations(
             data.partySize,
             data.startTime,
-            data.zone,
-            data.features,
-          )) ?? [];
+          );
+          recommended = pair;
+        }
       } catch (e) {
         error = "Soovituste laadimine ebaõnnestus";
       }
@@ -62,6 +78,7 @@
   let filteredReservations = $derived(
     reservations.filter((r) => {
       const start = new Date(r.startTime);
+      getTablePairRecommendations;
       const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
       return currentTime >= start && currentTime <= end;
     }),
@@ -85,6 +102,7 @@
           {tables}
           reservations={filteredReservations}
           {recommended}
+          {pair}
           onTableClick={handleTableClick}
         />
       {/if}
@@ -116,62 +134,5 @@
   }
   .error {
     color: red;
-  }
-
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-  }
-
-  .modal {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    min-width: 300px;
-    color: black;
-  }
-
-  .modal h3 {
-    margin: 0;
-  }
-
-  .modal label {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: 14px;
-  }
-
-  .modal input {
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .modal-buttons {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .modal-buttons button {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    background: #4caf50;
-    color: white;
-  }
-
-  .modal-buttons .cancel {
-    background: #ef5350;
   }
 </style>

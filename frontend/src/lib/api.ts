@@ -18,7 +18,7 @@ export async function getReservations() {
 }
 
 export async function getRecommendations(partySize: number, startTime: string, zone?: string, features?: string) {
-    const params = new URLSearchParams({ partySize: String(partySize), startTime})
+    const params = new URLSearchParams({ partySize: String(partySize), startTime })
     if (zone) params.append('zone', zone);
     if (features) params.append('features', features);
 
@@ -29,9 +29,15 @@ export async function getRecommendations(partySize: number, startTime: string, z
 export async function createReservation(reservation: object) {
     const res = await fetch(`${baseURL}/reservations`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reservation)
     })
 
+    return handleResponse(res)
+}
+
+export async function getTablePairRecommendations(partySize: number, startTime: string) {
+    const params = new URLSearchParams({ partySize: String(partySize), startTime })
+    const res = await fetch(`${baseURL}/recommendations/pair?${params}`)
     return handleResponse(res)
 }

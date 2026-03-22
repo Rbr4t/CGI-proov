@@ -6,19 +6,21 @@
     tables = [],
     reservations = [],
     recommended = [],
+    pair = [],
     onTableClick,
   } = $props<{
     tables: Table[];
     reservations: Reservation[];
     recommended: Table[];
+    pair: Table[];
     onTableClick: (table: Table) => void;
   }>();
 
-  let maxX = $derived(Math.max(...tables.map((t) => t.x), 100) + 150);
-  let maxY = $derived(Math.max(...tables.map((t) => t.y), 100) + 150);
+  let maxX = $derived(Math.max(...tables.map((t: any) => t.x), 100) + 150);
+  let maxY = $derived(Math.max(...tables.map((t: any) => t.y), 100) + 150);
   let maxScore = $derived(
     recommended.length > 0
-      ? Math.max(...recommended.map((r) => r.score ?? 0))
+      ? Math.max(...recommended.map((r: any) => r.score ?? 0))
       : 0,
   );
 
@@ -40,6 +42,23 @@
         {onTableClick}
       />
     {/each}
+
+    {#if pair.length > 0}
+      <svg
+        class="pair-line"
+        style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none;"
+      >
+        <line
+          x1="{(pair[0].x / maxX) * 100}%"
+          y1="{(pair[0].y / maxY) * 100}%"
+          x2="{(pair[1].x / maxX) * 100}%"
+          y2="{(pair[1].y / maxY) * 100}%"
+          stroke="#fbc02d"
+          stroke-width="4"
+          stroke-dasharray="6"
+        />
+      </svg>
+    {/if}
   </div>
 </div>
 
