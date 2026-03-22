@@ -126,6 +126,6 @@ Projekt ei valmistanud suuri raskusi, kuna ma olen varem sarnaseid rakendusi(vt 
 
 Ma tahtsin teha juurde ka admin lehe ja teha disain ilusaks, aga lõpuks ikkagi polnud aega seda juurde panna.
 
-Kokkuvõtlikult, oli päris lõbus projekt, väga palju oleks olnud, mis oleks saanud edasi arendada. 
+Kokkuvõtlikult, oli päris lõbus projekt. Päris palju oleks olnud veel mida oleks saanud edasi arendada. 
 
 Autor: Robert Koor
