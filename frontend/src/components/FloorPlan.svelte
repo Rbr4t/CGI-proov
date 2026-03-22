@@ -27,7 +27,8 @@
   const checkOccupied = (id: number) =>
     reservations.some((r: any) => r.tableId === id);
   const checkRecommended = (id: number) =>
-    recommended.some((r: any) => r.id === id && r.score === maxScore);
+    recommended.some((r: any) => r.id === id && r.score === maxScore) ||
+    pair.some((r: any) => r.id === id);
 </script>
 
 <div class="floor-plan-container">

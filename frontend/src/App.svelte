@@ -20,6 +20,12 @@
   let loading = $state(true);
   let error: string | null = $state(null);
   let currentTime: Date = $state(new Date());
+  let lastFilter: {
+    partySize: number;
+    zone: string;
+    features: string;
+    startTime: string;
+  } | null = $state(null);
 
   onMount(async () => {
     try {
@@ -39,30 +45,38 @@
     features: string;
     startTime: string;
   }) {
-    if (data.partySize > 0) {
-      try {
-        const res = await getRecommendations(
-          data.partySize,
-          data.startTime,
-          data.zone,
-          data.features,
-        );
+    lastFilter = data;
+    await updateRecommendations(
+      data.partySize,
+      data.zone,
+      data.features,
+      currentTime,
+    );
+  }
 
-        if (res.length > 0) {
-          recommended = res;
-          pair = [];
-        } else {
-          pair = await getTablePairRecommendations(
-            data.partySize,
-            data.startTime,
-          );
-          recommended = pair;
-        }
-      } catch (e) {
-        error = "Soovituste laadimine ebaõnnestus";
+  async function updateRecommendations(
+    partySize: number,
+    zone: string,
+    features: string,
+    time: Date,
+  ) {
+    try {
+      const timeString = time.toISOString().slice(0, 19);
+      const res = await getRecommendations(
+        partySize,
+        timeString,
+        zone,
+        features,
+      );
+      if (res.length > 0) {
+        recommended = res;
+        pair = [];
+      } else {
+        recommended = [];
+        pair = await getTablePairRecommendations(partySize, timeString);
       }
-    } else {
-      recommended = [];
+    } catch (e) {
+      error = "Soovituste laadimine ebaõnnestus";
     }
   }
 
@@ -78,11 +92,21 @@
   let filteredReservations = $derived(
     reservations.filter((r) => {
       const start = new Date(r.startTime);
-      getTablePairRecommendations;
       const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
       return currentTime >= start && currentTime <= end;
     }),
   );
+
+  $effect(() => {
+    if (lastFilter) {
+      updateRecommendations(
+        lastFilter.partySize,
+        lastFilter.zone,
+        lastFilter.features,
+        currentTime,
+      );
+    }
+  });
 </script>
 
 <main>
