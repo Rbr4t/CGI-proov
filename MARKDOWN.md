@@ -7,18 +7,20 @@
 
 ## Käivitamine
 
+> NB! Vaata, eks midagi muud samal ajal nendel portidel ei töötaks, muidu see ei lähe tööle.
+
 ```bash
 git clone https://github.com/Rbr4t/CGI-proov
 cd CGI-proov
 ```
 
-## Docker
+## Docker 
 
 ```bash
 sudo docker-compose up --build
 ```
 
-## UNIX
+## Otse kaustast
 
 ### Backend
 ```bash
@@ -122,7 +124,7 @@ Jätk 22. märts - ühtlustasin stiili. Implementeerisin juurde ka laudade liitm
 ## Mis oli keeruline
 Projekt ei valmistanud suuri raskusi, kuna ma olen varem sarnaseid rakendusi(vt GitHubi teisi projekte). Ainult kuna Java on mulle suhteliselt uus keel, siis süntaks ja lahenduse implementeerimine võttis kõige rohkem aega. Mured said lahenduse koodiagendiga ja tavalise veebiotsingutega (koodiagent oli märgatavalt suure koormuse all paar korda arendamise jooksul). <br>
 
-Ma tahtsin teha juurde ka admin lehe, teha disain ilusaks ja kogu projekt panna Dockeri konteinerisse, aga lõpuks ikkagi polnud aega seda juurde panna.
+Ma tahtsin teha juurde ka admin lehe ja teha disain ilusaks, aga lõpuks ikkagi polnud aega seda juurde panna.
 
 Kokkuvõtlikult, oli päris lõbus projekt, väga palju oleks olnud, mis oleks saanud edasi arendada. 
 
