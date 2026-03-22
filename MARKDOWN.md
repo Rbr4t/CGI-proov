@@ -5,12 +5,20 @@
 - Java 25 SDK
 - Node v24
 
-## Käivitamine - Linux
+## Käivitamine
 
 ```bash
 git clone https://github.com/Rbr4t/CGI-proov
 cd CGI-proov
 ```
+
+## Docker
+
+```bash
+sudo docker-compose up --build
+```
+
+## UNIX
 
 ### Backend
 ```bash
