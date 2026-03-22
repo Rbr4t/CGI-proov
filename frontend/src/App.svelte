@@ -113,7 +113,7 @@
   <h1>Restorani reserveerimissüsteem</h1>
   <div class="layout">
     <div class="sidebar">
-      <FilterPanel onFilter={handleFilter} />
+      <FilterPanel onFilter={handleFilter} bind:currentTime />
       <TimeController bind:currentTime />
     </div>
     <div class="content">

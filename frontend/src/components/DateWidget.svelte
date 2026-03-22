@@ -48,7 +48,6 @@
 <style>
   .date-widget {
     display: flex;
-    gap: 0.5rem;
     align-items: center;
   }
   select {

@@ -1,5 +1,6 @@
 <script lang="ts">
   import DateWidget from "./DateWidget.svelte";
+  import TimeWidget from "./TimeWidget.svelte";
 
   let partySize = $state(2);
   let zone = $state("");
@@ -7,13 +8,14 @@
   let date = $state("");
   let time = $state("");
 
-  let { onFilter } = $props<{
+  let { onFilter, currentTime = $bindable() } = $props<{
     onFilter: (data: {
       partySize: number;
       zone: string;
       features: string;
       startTime: string;
     }) => void;
+    currentTime: Date;
   }>();
 
   function handleSubmit() {
@@ -22,20 +24,28 @@
     const startTime = `${date}T${time}:00`;
     onFilter({ partySize, zone, features, startTime });
   }
+
+  $effect(() => {
+    if (date && time) {
+      currentTime = new Date(`${date}T${time}:00`);
+    }
+  });
 </script>
 
 <div class="filter-panel">
   <h2>Otsi lauda</h2>
 
-  <label>
-    Kuupäev
-    <DateWidget bind:value={date} />
-  </label>
+  <div class="bundle">
+    <label>
+      Kuupäev
+      <DateWidget bind:value={date} />
+    </label>
 
-  <label>
-    Kellaaeg
-    <input type="time" bind:value={time} />
-  </label>
+    <label>
+      Kellaaeg
+      <TimeWidget bind:value={time} />
+    </label>
+  </div>
 
   <label>
     Seltskonna suurus
@@ -74,6 +84,11 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     max-width: 300px;
+  }
+
+  .bundle {
+    display: flex;
+    gap: 1rem;
   }
 
   label {
