@@ -61,8 +61,10 @@ public class RestaurantController {
             @RequestParam String startTime) {
 
         LocalDateTime time = LocalDateTime.parse(startTime);
-        return recommendationService.getRecommendations(partySize, zone, features, time);
-
+        if (partySize > 0) {
+            return recommendationService.getRecommendations(partySize, zone, features, time);
+        }
+        return null;
     }
 
     // new booking POST

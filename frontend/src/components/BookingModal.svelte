@@ -75,14 +75,15 @@
     }
 
     .modal {
-        background: white;
+        background: black;
+        border: 1px solid white;
         padding: 2rem;
         border-radius: 12px;
         display: flex;
         flex-direction: column;
         gap: 1rem;
         min-width: 300px;
-        color: black;
+        color: white;
     }
 
     .modal h3 { margin: 0; }
