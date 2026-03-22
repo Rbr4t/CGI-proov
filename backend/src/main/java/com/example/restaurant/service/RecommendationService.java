@@ -5,6 +5,8 @@ import com.example.restaurant.model.Table;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.ArrayList;
+
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +71,32 @@ public class RecommendationService {
         }
 
         return score;
+    }
+
+    private double distance(Table a, Table b) {
+        return Math.sqrt(Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2));
+    }
+
+    public List<List<Table>> getTablePairRecommendations(int partySize, LocalDateTime startTime) {
+        List<Table> available = tableRepository.findAll().stream()
+                .filter(t -> reservationService.isTableAvailable(t.getId(), startTime))
+                .collect(Collectors.toList());
+
+        List<List<Table>> pairs = new ArrayList<>();
+        int maxDist = 250;
+
+        for (int i = 0; i < available.size(); i++) {
+            for (int j = i + 1; j < available.size(); j++) {
+                Table a = available.get(i);
+                Table b = available.get(j);
+
+                if (a.getCapacity() + b.getCapacity() >= partySize && distance(a, b) <= maxDist) {
+                    pairs.add(List.of(a, b));
+                }
+            }
+        }
+
+        return pairs;
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.restaurant.service;
 
+import java.text.Collator;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +27,13 @@ public class ReservationService {
 
     public boolean isTableAvailable(Long tableId, LocalDateTime startTime) {
         List<Reservation> existing = reservationRepository.findByTableId(tableId);
+        LocalDateTime newEnd = startTime.plusHours(2);
 
+        // 2 intervalls: 1. for reservation and 2. for starttime + Hours
+        // if itnervalls are [a, b] and [c, d], then we are checking if a < d && b > c
         for (Reservation reservation : existing) {
-            LocalDateTime endTime = reservation.getStartTime().plusHours(2);
-            if (startTime.isBefore(endTime) && startTime.isAfter(reservation.getStartTime().minusMinutes(1))) {
-
+            LocalDateTime exsistingEnd = reservation.getStartTime().plusHours(2);
+            if (startTime.isBefore(exsistingEnd) && newEnd.isAfter(reservation.getStartTime().minusMinutes(1))) {
                 return false;
             }
         }

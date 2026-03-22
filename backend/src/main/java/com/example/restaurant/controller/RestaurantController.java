@@ -67,6 +67,14 @@ public class RestaurantController {
         return null;
     }
 
+    @GetMapping("recommendations/pairs")
+    public List<List<Table>> getTablePairs(
+            @RequestParam int partySize,
+            @RequestParam String startTime) {
+        LocalDateTime time = LocalDateTime.parse(startTime);
+        return recommendationService.getTablePairRecommendations(partySize, time);
+    }
+
     // new booking POST
     @PostMapping("reservations")
     public Reservation createReservation(@RequestBody Reservation reservation) {
